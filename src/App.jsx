@@ -1468,15 +1468,23 @@ const App = () => {
                 {userId && <span className="ml-4 text-xs text-gray-500 dark:text-gray-400">UID: {userId.substring(0,10)}...</span>}
               </div>
               <div className="flex items-center space-x-3">
-                 {currentView === 'builder-canvas' && currentForm && (
+                {/* --- Add this block for a Back button --- */}
+                {currentView !== 'builder' && (
+                  <button
+                    onClick={() => useUIStore.getState().setCurrentView('builder')}
+                    className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
+                    title="Back to Dashboard"
+                  >
+                    ← Back
+                  </button>
+                )}
+                {/* ...existing theme/preview/save buttons... */}
+                {currentView === 'builder-canvas' && currentForm && (
                   <>
                     <button onClick={undo} title="Undo" className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50" disabled={useFormStore.getState().historyIndex <= 0}><Undo size={20} /></button>
                     <button onClick={redo} title="Redo" className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50" disabled={useFormStore.getState().historyIndex >= useFormStore.getState().history.length - 1}><Redo size={20} /></button>
                     <button onClick={saveCurrentForm} title="Save Form" className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"><Save size={20} /></button>
                     <button onClick={() => setShowPreviewModal(true)} title="Preview Form" className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"><ExternalLink size={20} /></button>
-                    <button onClick={() => useUIStore.getState().setCurrentView('builder')} title="Back to Dashboard" className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <Columns size={20} />
-                    </button>
                   </>
                 )}
                 <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -1508,14 +1516,23 @@ const App = () => {
           <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-t-lg w-full max-w-3xl flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Form Preview</h3>
             <div className="flex items-center space-x-2">
-                <button onClick={() => setPreviewDevice('mobile')} className={`p-1.5 rounded ${previewDevice === 'mobile' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}><Smartphone size={18}/></button>
-                <button onClick={() => setPreviewDevice('tablet')} className={`p-1.5 rounded ${previewDevice === 'tablet' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}><Tablet size={18}/></button>
-                <button onClick={() => setPreviewDevice('desktop')} className={`p-1.5 rounded ${previewDevice === 'desktop' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}><Monitor size={18}/></button>
+              <button onClick={() => setPreviewDevice('mobile')} className={`p-1.5 rounded ${previewDevice === 'mobile' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}>📱</button>
+              <button onClick={() => setPreviewDevice('tablet')} className={`p-1.5 rounded ${previewDevice === 'tablet' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}>💊</button>
+              <button onClick={() => setPreviewDevice('desktop')} className={`p-1.5 rounded ${previewDevice === 'desktop' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}>🖥️</button>
             </div>
             <button onClick={() => setShowPreviewModal(false)} className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white text-2xl">&times;</button>
           </div>
-          <div className="bg-gray-200 dark:bg-gray-700 p-4 md:p-8 w-full max-w-3xl overflow-y-auto rounded-b-lg">
-             <FormPreview form={currentForm} device={previewDevice} />
+          <div className="flex justify-center items-center w-full max-w-3xl bg-gray-200 dark:bg-gray-700 p-4 md:p-8 overflow-y-auto rounded-b-lg" style={{minHeight: '80vh'}}>
+            <div
+              className={`
+                bg-white dark:bg-gray-800 shadow-xl rounded-2xl border-4 border-gray-300 dark:border-gray-700
+                ${previewDevice === 'mobile' ? 'w-[375px] h-[700px]' : previewDevice === 'tablet' ? 'w-[600px] h-[900px]' : 'w-full max-w-2xl'}
+                overflow-auto
+              `}
+              style={{ transition: 'width 0.3s, height 0.3s' }}
+            >
+              <FormPreview form={currentForm} device={previewDevice} />
+            </div>
           </div>
         </div>
       )}
