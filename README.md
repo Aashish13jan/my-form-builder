@@ -1,12 +1,77 @@
-# React + Vite
+# Form Builder Deluxe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive form builder built with React, Zustand, and DnD Kit. Easily create, preview, and share custom forms with drag-and-drop functionality.
 
-Currently, two official plugins are available:
+[Live Demo](https://aashish13jan.github.io/my-form-builder/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Drag-and-drop form builder (desktop & mobile)
+- Responsive design for all devices
+- Light/Dark mode toggle
+- Preview forms on mobile, tablet, and desktop
+- Save and share forms with unique links
+- View form responses
+
+---
+
+## Getting Started
+
+### Installation
+
+```sh
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+npm install
+```
+
+### Development
+
+```sh
+npm run dev
+```
+
+### Build & Deploy
+
+```sh
+npm run build
+npm run deploy
+```
+
+---
+
+## Technologies Used
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [DnD Kit](https://dndkit.com/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+## Demo
+
+[Live Site](https://aashish13jan.github.io/my-form-builder/)
+
+---
+
+## Screenshots
+
+![Dashboard Screenshot](./screenshot.png)
+
+<!-- Add more screenshots here if you have them -->
+
+---
+
+## License
+
+MIT
+
+---
+
+## Author
+
+Aashish13jan

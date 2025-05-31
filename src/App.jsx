@@ -1445,10 +1445,21 @@ const App = () => {
     // Default to builder dashboard or canvas
     if (currentView === 'builder-canvas' && currentForm) {
        return (
-        <div className="flex h-screen overflow-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-          <Sidebar />
-          <Canvas />
-          <PropertiesPanel />
+        <div className="flex flex-col md:flex-row h-[calc(100vh-64px)] bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+          {/* Sidebar: collapses to top on mobile */}
+          <div className="w-full md:w-72 flex-shrink-0 md:h-auto h-auto md:static sticky top-0 z-30 bg-gray-50 dark:bg-gray-800 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
+            <Sidebar />
+          </div>
+          {/* Canvas: full width on mobile, center with max width on desktop */}
+          <div className="flex-1 w-full max-w-full flex justify-center items-start overflow-y-auto p-2 sm:p-4 md:p-8 bg-gray-50 dark:bg-gray-900">
+            <div className="w-full max-w-md md:max-w-2xl">
+              <Canvas />
+            </div>
+          </div>
+          {/* Properties Panel: full width on mobile, side panel on desktop */}
+          <div className="w-full md:w-80 flex-shrink-0 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-700">
+            <PropertiesPanel />
+          </div>
         </div>
       );
     }
@@ -1461,24 +1472,27 @@ const App = () => {
         {/* Global Header only if not in filler view */}
         {currentView !== 'filler' && (
           <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-40">
-            <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3 flex justify-between items-center">
               <div className="flex items-center">
-                <Palette size={28} className="text-blue-600 dark:text-blue-400 mr-2" />
-                <h1 className="text-xl font-bold text-gray-800 dark:text-white">Form Builder Deluxe</h1>
-                {userId && <span className="ml-4 text-xs text-gray-500 dark:text-gray-400">UID: {userId.substring(0,10)}...</span>}
-              </div>
-              <div className="flex items-center space-x-3">
-                {/* --- Add this block for a Back button --- */}
+                {/* --- Back button to the left of logo --- */}
                 {currentView !== 'builder' && (
                   <button
                     onClick={() => useUIStore.getState().setCurrentView('builder')}
-                    className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
+                    className="mr-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
                     title="Back to Dashboard"
                   >
-                    ← Back
+                    ←
                   </button>
                 )}
-                {/* ...existing theme/preview/save buttons... */}
+                <Palette size={24} className="text-blue-600 dark:text-blue-400 mr-2" />
+                <h1 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white whitespace-nowrap">Form Builder Deluxe</h1>
+                {userId && (
+                  <span className="ml-2 text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
+                    UID: {userId.substring(0, 10)}...
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 {currentView === 'builder-canvas' && currentForm && (
                   <>
                     <button onClick={undo} title="Undo" className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50" disabled={useFormStore.getState().historyIndex <= 0}><Undo size={20} /></button>
@@ -1494,8 +1508,8 @@ const App = () => {
             </div>
           </header>
         )}
-        
-        <main className="flex-grow">
+
+        <main className="flex-grow w-full">
           {renderView()}
         </main>
 
@@ -1512,21 +1526,21 @@ const App = () => {
       </div>
       
       {showPreviewModal && currentForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center p-4 z-50 overflow-y-auto">
-          <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-t-lg w-full max-w-3xl flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Form Preview</h3>
-            <div className="flex items-center space-x-2">
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
+          <div className="bg-gray-200 dark:bg-gray-800 p-2 sm:p-4 rounded-t-lg w-full max-w-xs sm:max-w-3xl flex justify-between items-center">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">Form Preview</h3>
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <button onClick={() => setPreviewDevice('mobile')} className={`p-1.5 rounded ${previewDevice === 'mobile' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}>📱</button>
               <button onClick={() => setPreviewDevice('tablet')} className={`p-1.5 rounded ${previewDevice === 'tablet' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}>💊</button>
               <button onClick={() => setPreviewDevice('desktop')} className={`p-1.5 rounded ${previewDevice === 'desktop' ? 'bg-blue-500 text-white' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}`}>🖥️</button>
             </div>
             <button onClick={() => setShowPreviewModal(false)} className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white text-2xl">&times;</button>
           </div>
-          <div className="flex justify-center items-center w-full max-w-3xl bg-gray-200 dark:bg-gray-700 p-4 md:p-8 overflow-y-auto rounded-b-lg" style={{minHeight: '80vh'}}>
+          <div className="flex justify-center items-center w-full max-w-xs sm:max-w-3xl bg-gray-200 dark:bg-gray-700 p-2 sm:p-8 overflow-y-auto rounded-b-lg" style={{ minHeight: '70vh' }}>
             <div
               className={`
                 bg-white dark:bg-gray-800 shadow-xl rounded-2xl border-4 border-gray-300 dark:border-gray-700
-                ${previewDevice === 'mobile' ? 'w-[375px] h-[700px]' : previewDevice === 'tablet' ? 'w-[600px] h-[900px]' : 'w-full max-w-2xl'}
+                ${previewDevice === 'mobile' ? 'w-[320px] h-[600px] max-w-full' : previewDevice === 'tablet' ? 'w-[600px] h-[900px] max-w-full' : 'w-full max-w-2xl'}
                 overflow-auto
               `}
               style={{ transition: 'width 0.3s, height 0.3s' }}
